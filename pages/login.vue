@@ -51,21 +51,21 @@ export default {
           password: this.credentials.password
         })
         .then(resp => {
-          this.$auth.setToken("local", "Bearer " + resp.data.access_token);
-          this.$auth.setRefreshToken("local", resp.data.refresh_token);
+          this.$auth.setToken("local", "Bearer " + resp.data.accessToken);
+          this.$auth.setRefreshToken("local", resp.data.refreshToken);
           this.$axios.setHeader(
             "Authorization",
-            "Bearer " + resp.data.access_token
+            "Bearer " + resp.data.accessToken
           );
           this.$auth.ctx.app.$axios.setHeader(
             "Authorization",
-            "Bearer " + resp.data.access_token
+            "Bearer " + resp.data.accessToken
           );
           this.$router.push("/");
-          // this.$axios.get("/users/me").then(resp => {
-          //   this.$auth.setUser(resp.data);
-          //   this.$router.push("/");
-          // });
+          this.$axios.get("/user/me").then(resp => {
+            this.$auth.setUser(resp.data);
+            this.$router.push("/");
+          });
         });
     }
   }
