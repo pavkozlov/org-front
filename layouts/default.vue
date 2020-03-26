@@ -49,14 +49,14 @@ export default {
 
       items: [
         {
-          icon: "mdi-login",
-          title: "Вход",
-          to: "/login"
-        },
-        {
           icon: "mdi-calendar-check",
           title: "Главная",
           to: "/"
+        },
+        {
+          icon: "mdi-login",
+          title: "Вход",
+          to: "/login"
         }
       ],
 
