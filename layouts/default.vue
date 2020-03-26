@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" app color="primary" absolute dark>
+    <v-navigation-drawer v-model="drawer" app color="primary" dark temporary>
       <template v-slot:prepend>
         <v-list-item>
           <v-list-item-content>
@@ -24,7 +24,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar fixed app color="primary" dark>
+    <v-app-bar app color="primary" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
     </v-app-bar>
@@ -35,7 +35,7 @@
       </v-container>
     </v-content>
 
-    <v-footer :fixed="fixed" app>
+    <v-footer app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
   </v-app>
@@ -49,7 +49,7 @@ export default {
 
       items: [
         {
-          icon: "mdi-calendar-check",
+          icon: "mdi-home",
           title: "Главная",
           to: "/"
         },
