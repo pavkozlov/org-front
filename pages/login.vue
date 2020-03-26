@@ -6,10 +6,17 @@
     </v-toolbar>
     <v-card-text>
       <v-form>
-        <v-text-field label="Имя пользователя" name="login" prepend-icon="mdi-account" type="text" />
+        <v-text-field
+          v-model="credentials.username"
+          label="Имя пользователя"
+          name="login"
+          prepend-icon="mdi-account"
+          type="text"
+        />
 
         <v-text-field
           id="password"
+          v-model="credentials.password"
           label="Пароль"
           name="password"
           prepend-icon="mdi-lock"
@@ -19,13 +26,48 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn color="primary">Войти</v-btn>
+      <v-btn color="primary" @click="login()">Войти</v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
 export default {
-  layout: "login"
+  layout: "login",
+  data: () => ({
+    credentials: {
+      username: "",
+      password: ""
+    },
+    usernameRules: [v => !!v || "Введите логин"],
+    passwordRules: [v => !!v || "Введите пароль"]
+  }),
+
+  methods: {
+    login() {
+      this.$axios
+        .post("/user/login", {
+          username: this.credentials.username,
+          password: this.credentials.password
+        })
+        .then(resp => {
+          this.$auth.setToken("local", "Bearer " + resp.data.access_token);
+          this.$auth.setRefreshToken("local", resp.data.refresh_token);
+          this.$axios.setHeader(
+            "Authorization",
+            "Bearer " + resp.data.access_token
+          );
+          this.$auth.ctx.app.$axios.setHeader(
+            "Authorization",
+            "Bearer " + resp.data.access_token
+          );
+          this.$router.push("/");
+          // this.$axios.get("/users/me").then(resp => {
+          //   this.$auth.setUser(resp.data);
+          //   this.$router.push("/");
+          // });
+        });
+    }
+  }
 };
 </script>

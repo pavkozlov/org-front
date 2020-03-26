@@ -35,7 +35,7 @@ export default {
   buildModules: [
     // Simple usage
     '@nuxtjs/vuetify',
-  
+
     // // With options
     // ['@nuxtjs/vuetify', { /* module options */ }],
   ],
@@ -50,12 +50,32 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/auth',
   ],
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
+    baseURL: 'http://localhost:8080'
+  },
+
+  auth: {
+    localStorage: false,
+    cookie: {
+      options: {
+        expires: 7
+      }
+    },
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: '/user/login', method: 'post', propertyName: false },
+          logout: false,
+          user: { url: '/users/me', method: 'get', propertyName: false }
+        }
+      }
+    },
   },
   /*
   ** Build configuration
@@ -64,7 +84,7 @@ export default {
     /*
     ** You can extend webpack config here
     */
-    extend (config, ctx) {
+    extend(config, ctx) {
     }
   }
 }
