@@ -27,6 +27,8 @@
     <v-app-bar app color="primary" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
+      <v-spacer></v-spacer>
+      <v-btn text @click="logout">Выйти</v-btn>
     </v-app-bar>
 
     <v-content>
@@ -42,6 +44,7 @@
 </template>
 
 <script>
+
 export default {
   data() {
     return {
@@ -62,6 +65,12 @@ export default {
 
       title: "Organizer"
     };
+  },
+  methods:{
+    logout(){
+      this.$auth.logout();
+      this.$router.push({ path: '/login'});
+    }
   }
 };
 </script>
