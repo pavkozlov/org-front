@@ -64,7 +64,7 @@ export default {
     localStorage: false,
     cookie: {
       options: {
-        expires: 7
+        expires: 60
       }
     },
     strategies: {
@@ -79,9 +79,8 @@ export default {
   },
 
   router: {
-    middleware: ['auth']
+    middleware: ['autorefresh']
   },
-  
   /*
   ** Build configuration
   */
