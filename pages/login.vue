@@ -32,8 +32,12 @@
 </template>
 
 <script>
+const Cookie = process.client ? require("js-cookie") : undefined;
+
 export default {
+  middleware: "notAuthenticated",
   layout: "login",
+
   data: () => ({
     credentials: {
       username: "",
@@ -44,29 +48,17 @@ export default {
   }),
 
   methods: {
-    login() {
-      this.$axios
-        .post("/user/login", {
-          username: this.credentials.username,
-          password: this.credentials.password
-        })
-        .then(resp => {
-          this.$auth.setToken("local", "Bearer " + resp.data.accessToken);
-          this.$auth.setRefreshToken("local", resp.data.refreshToken);
-          this.$axios.setHeader(
-            "Authorization",
-            "Bearer " + resp.data.accessToken
-          );
-          this.$auth.ctx.app.$axios.setHeader(
-            "Authorization",
-            "Bearer " + resp.data.accessToken
-          );
-          this.$router.push("/");
-          this.$axios.get("/user/me").then(resp => {
-            this.$auth.setUser(resp.data);
-            this.$router.push("/");
-          });
-        });
+    async login() {
+      let auth = await this.$axios.post("/user/login", {
+        username: this.credentials.username,
+        password: this.credentials.password
+      });
+
+      this.$store.commit("setAuth", auth.data);
+      Cookie.set("auth", auth.data);
+      this.$router.push("/");
+
+      this.$axios.setHeader("Authorization", "Bearer " + auth.data.accessToken);
     }
   }
 };

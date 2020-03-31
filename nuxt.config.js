@@ -35,7 +35,6 @@ export default {
   buildModules: [
     // Simple usage
     '@nuxtjs/vuetify',
-
     // // With options
     // ['@nuxtjs/vuetify', { /* module options */ }],
   ],
@@ -50,7 +49,7 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/auth',
+    'cookie-universal-nuxt',
   ],
   /*
   ** Axios module configuration
@@ -60,26 +59,8 @@ export default {
     baseURL: 'http://localhost:8080'
   },
 
-  auth: {
-    localStorage: false,
-    cookie: {
-      options: {
-        expires: 60
-      }
-    },
-    strategies: {
-      local: {
-        endpoints: {
-          login: { url: '/user/login', method: 'post', propertyName: false },
-          logout: false,
-          user: { url: '/user/me', method: 'get', propertyName: false }
-        }
-      }
-    },
-  },
-
   router: {
-    middleware: ['autorefresh']
+
   },
   /*
   ** Build configuration

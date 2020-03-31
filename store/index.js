@@ -1,44 +1,36 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+const cookieparser = process.server ? require('cookieparser') : undefined
 
-Vue.use(Vuex)
-
-const store = () => new Vuex.Store({
-
-    mutations: {
-        REFRESH_TOKEN() {
-            this.$axios.post("/user/refresh", { "refreshToken": this.$auth.getRefreshToken("local") })
-                .then(resp => {
-                    this.$auth.setToken("local", "Bearer " + resp.data.accessToken);
-                    this.$auth.setRefreshToken("local", resp.data.refreshToken);
-                    this.$axios.setHeader(
-                        "Authorization",
-                        "Bearer " + resp.data.accessToken
-                    );
-                    this.$auth.ctx.app.$axios.setHeader(
-                        "Authorization",
-                        "Bearer " + resp.data.accessToken
-                    )
-                    // this.$router.push("/");
-                }
-                )
-        }
-    },
-    actions: {
-        REFRESH_TOKEN: (context) => {
-            context.commit('REFRESH_TOKEN');
-        },
-    },
-
-    getters: {
-        isAuthenticated(state) {
-            return state.auth.loggedIn
-        },
-
-        loggedInUser(state) {
-            return state.auth.user
-        }
+export const state = () => {
+    return {
+        auth: null
     }
-})
+}
+export const mutations = {
+    setAuth(state, auth) {
+        state.auth = auth
+    }
+}
+export const actions = {
+    setAuth(context, auth) {
+        context.commit('setAuth', auth);
+    },
+    nuxtServerInit({ commit }, { req, res, app }) {
 
-export default store
+        let auth = null
+        if (req.headers.cookie) {
+            const parsed = cookieparser.parse(req.headers.cookie)
+            try {
+                auth = JSON.parse(parsed.auth)
+            } catch (err) {
+                // No valid cookie found
+            }
+        }
+        commit('setAuth', auth)
+    }
+}
+
+export const getters = {
+    GET_AUTH(state) {
+        return state.auth
+    }
+} 
