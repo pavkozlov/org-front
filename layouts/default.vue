@@ -44,8 +44,6 @@
 </template>
 
 <script>
-const Cookie = process.client ? require("js-cookie") : undefined;
-
 export default {
   data() {
     return {
@@ -69,7 +67,7 @@ export default {
   },
   methods: {
     logout() {
-      Cookie.remove("auth");
+      this.$cookies.remove("auth");
       this.$store.commit("setAuth", null);
       this.$router.push("/login");
     }

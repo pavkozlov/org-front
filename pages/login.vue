@@ -32,8 +32,6 @@
 </template>
 
 <script>
-const Cookie = process.client ? require("js-cookie") : undefined;
-
 export default {
   middleware: "notAuthenticated",
   layout: "login",
@@ -42,9 +40,7 @@ export default {
     credentials: {
       username: "",
       password: ""
-    },
-    usernameRules: [v => !!v || "Введите логин"],
-    passwordRules: [v => !!v || "Введите пароль"]
+    }
   }),
 
   methods: {
@@ -55,9 +51,8 @@ export default {
       });
 
       this.$store.commit("setAuth", auth.data);
-      Cookie.set("auth", auth.data);
+      this.$cookies.set("auth", auth.data);
       this.$router.push("/");
-
       this.$axios.setHeader("Authorization", "Bearer " + auth.data.accessToken);
     }
   }

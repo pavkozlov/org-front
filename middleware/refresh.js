@@ -3,10 +3,7 @@ export default async function ({ app }) {
     if ((decodeToken(app.store.getters.GET_AUTH.accessToken) - Date.now() / 1000) < 1775) {
 
         async function refresh() {
-            return await app.$axios.post("/user/refresh", {
-                refreshToken: app.store.getters.GET_AUTH.refreshToken
-            })
-
+            return await app.$axios.post("/user/refresh", { refreshToken: app.store.getters.GET_AUTH.refreshToken })
         }
 
         let data = await refresh()
@@ -14,7 +11,6 @@ export default async function ({ app }) {
         app.$axios.setHeader("Authorization", "Bearer " + data.data.accessToken);
         app.store.dispatch("setAuth", data.data);
         app.$cookies.set('auth', app.store.getters.GET_AUTH)
-
 
     }
 
