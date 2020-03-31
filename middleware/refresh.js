@@ -1,6 +1,6 @@
 export default async function ({ app }) {
 
-    if ((decodeToken(app.store.getters.GET_AUTH.accessToken) - Date.now() / 1000) < 1775) {
+    if ((decodeToken(app.store.getters.GET_AUTH.accessToken) - Date.now() / 1000) < 300) {
 
         async function refresh() {
             return await app.$axios.post("/user/refresh", { refreshToken: app.store.getters.GET_AUTH.refreshToken })
