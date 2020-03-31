@@ -33,19 +33,34 @@ export default {
   ** Nuxt.js dev-modules
   */
   buildModules: [
+    // Simple usage
+    '@nuxtjs/vuetify',
+    // // With options
+    // ['@nuxtjs/vuetify', { /* module options */ }],
   ],
+
+  vuetify: {
+    /* module options */
+  },
+
   /*
   ** Nuxt.js modules
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    'cookie-universal-nuxt',
   ],
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
+    baseURL: 'http://localhost:8080'
+  },
+
+  router: {
+
   },
   /*
   ** Build configuration
@@ -54,7 +69,7 @@ export default {
     /*
     ** You can extend webpack config here
     */
-    extend (config, ctx) {
+    extend(config, ctx) {
     }
   }
 }
